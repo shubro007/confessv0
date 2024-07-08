@@ -66,7 +66,7 @@ def confessions(request):
     else:
         a = aa.order_by('-comment_count')
 
-    p = Paginator(a, 3)  # creating a paginator object
+    p = Paginator(a, 10)  # creating a paginator object
     # getting the desired page number from url
     page_number = request.GET.get('page')
     try:
