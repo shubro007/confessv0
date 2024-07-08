@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 import dj_database_url
 from pathlib import Path
-
+import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,13 +20,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-(9o(#44yla-iomg#5&p07@9ntcw!+@+$8*=b+$ni0-d#ld7@xl'
+# SECRET_KEY = 'django-insecure-(9o(#44yla-iomg#5&p07@9ntcw!+@+$8*=b+$ni0-d#ld7@xl'
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DEBUG","False").lower() == "true"
 
-ALLOWED_HOSTS = ['192.168.29.230','127.0.0.1','192.168.173.25']
-
+# ALLOWED_HOSTS = ['192.168.29.230','127.0.0.1','192.168.173.25']
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(" ")
 
 # Application definition
 
@@ -81,7 +82,9 @@ DATABASES = {
         'NAME': BASE_DIR / 'dbnew.sqlite3',
     }
 }
-DATABASES['default'] = dj_database_url.parse("postgresql://confess_v0_user:1S2XINsTx1bWN3m8fYSWbhHeHCC475cF@dpg-cq626ics1f4s73dr7f7g-a.oregon-postgres.render.com/confess_v0")
+
+database_url = os.environ.get("DATABASE_URL")
+DATABASES['default'] = dj_database_url.parse(database_url)
 # postgresql://confess_v0_user:1S2XINsTx1bWN3m8fYSWbhHeHCC475cF@dpg-cq626ics1f4s73dr7f7g-a.oregon-postgres.render.com/confess_v0
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
